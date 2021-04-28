@@ -44,7 +44,12 @@ def filter_memory_references(i):
 
 
 def disassemble(asm, arch, bits, verbose=False):
-    binary = binascii.unhexlify(asm)
+    if isinstance(asm, str):
+        binary = binascii.unhexlify(asm)
+    elif isinstance(asm, bytes):
+        binary = asm
+    else:
+        raise ValueError("Invalid type of parameter 'asm': %s" % type(asm))
 
     if arch == "x86":
         cs_arch = capstone.CS_ARCH_X86
